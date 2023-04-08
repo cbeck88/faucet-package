@@ -16,6 +16,13 @@ Then, get a prompt in the container. You will need to install `supervisord` and 
 sudo apt-get update && sudo apt-get install supervisor nginx-core jq
 ```
 
+You will need to further fix-up the default nginx install.
+
+```
+sudo systemctl stop nginx
+sudo rm /etc/nginx/sites-enabled/default
+```
+
 You can use `wget` to fetch the pre-created package and install it with `tar`.
 (Below we have a one-liner using `jq` that finds and fetches the latest release.)
 
@@ -41,7 +48,7 @@ You can also look at the `/var/log/mobilecoind.log` and `/var/log/faucet.log` fi
 
 ## Ports and Networking
 
-With the packaged configs, nginx listens on port 80 for HTTP, and it proxies `POST /` and `GET /status` to the faucet on 8080.
+With the packaged configs, nginx listens on port 80 for HTTP, and it proxies `POST /` and `GET /status` to the faucet on 9090.
 It serves other `GET` requests from the `/var/www` directory.
 
 * You can modify `/etc/supervisord/conf.d/nginx.conf` if you want to change how it is launched.

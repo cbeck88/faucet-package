@@ -13,7 +13,7 @@ I configured a machine with OS-only and selected Ubuntu 22.04.
 Then, get a prompt in the container. You will need to install `supervisord` and `nginx`.
 
 ```
-sudo apt-get update && sudo apt-get install supervisor nginx
+sudo apt-get update && sudo apt-get install supervisor nginx-core
 ```
 
 You can use `wget` to fetch the pre-created package and install it with `tar`.
@@ -24,6 +24,10 @@ cd /
 wget https://github.com/cbeck88/faucet-package/releases/download/v0.2/package.tar.gz
 tar -xzvf package.tar.gz
 ```
+
+The package will include an example account key which holds the funds of the faucet.
+This key is installed as `/var/lib/faucet/account_key.json`.
+You should modify the mnemonic in this file, replacing it with a secret mnemonic that you control.
 
 Then, run `supervisorctl`. You can use `reload` to start the services.
 
@@ -48,17 +52,15 @@ If you have a static ip, you can set up an A record in DNS if you like.
 
 ## Testing that it is working
 
-You can try navigating to `http://123.456.789.000` in the browser to see if you can access the `index.html` page. You may be able to request payment by pasting your b58 into the form.
-
 You can try to ask the dev-faucet for its status:
 
 ```
 curl http://123.456.789.000/status
 ```
 
-You should get back a json blob.
+You should get back a json blob. This will include the faucet's public address if you want to fund it.
 
-If the `index.html` page is not working, but `status` is, you may be able to request payment directly using curl.
+You can request payment directly using curl.
 
 ```
 curl http://123.456.789.000/ -d '{"b58_address": "5KBMnd8cs5zPsytGgZrjmQ8z9VJYThuh1B39pKzDERTfzm3sVGQxnZPC8JEWP69togpSPRz3e6pBsLzwnMjrXTbDqoRTQ8VF98sQu7LqjL5"}' -X POST

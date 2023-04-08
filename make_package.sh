@@ -65,8 +65,8 @@ cp -f "$ROOT/mobilecoin/target/release/mobilecoind-dev-faucet" usr/local/bin/
 chmod 755 usr/local/bin/mobilecoind-dev-faucet
 cp -f "$ROOT/conf/faucet.conf" etc/supervisor/conf.d/faucet.conf
 chmod 644 etc/supervisor/conf.d/faucet.conf
-cp -f "$ROOT/example/account_key.json" var/lib/faucet/account_key.json
-chmod 640 var/lib/faucet/account_key.json
+cp -f "$ROOT/example/account_key.json" var/lib/faucet/account_key_example.json
+chmod 640 var/lib/faucet/account_key_example.json
 
 cp -f "$ROOT/nginx.conf" var/lib/faucet/nginx.conf
 chmod 644 var/lib/faucet/nginx.conf

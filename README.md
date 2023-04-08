@@ -6,28 +6,31 @@ This repo helps you set up a minimal deployment of the `mobilecoind-dev-faucet`.
 
 Start by getting a cloud machine somewhere.
 
-I used [Amazon Lightsail](https://aws.amazon.com/free/compute/lightsail/?trk=56417dfe-8849-4622-bfa4-7ec30bd6f5a3&sc_channel=ps&ef_id=Cj0KCQjw_r6hBhDdARIsAMIDhV9mF7D1mX0JVrE8kVXF_gKbQw3GOy8Prk3Bc6AtwPdOZHMYgTAY3t4aAgMyEALw_wcB:G:s&s_kwcid=AL!4422!3!536323500429!e!!g!!amazon%20lightsail!11199789546!116615087504) with 4 GB RAM, 2 vCPUs, 80 GB SSD.
+I used [Amazon Lightsail](https://aws.amazon.com/free/compute/lightsail/?trk=56417dfe-8849-4622-bfa4-7ec30bd6f5a3&sc_channel=ps&ef_id=Cj0KCQjw_r6hBhDdARIsAMIDhV9mF7D1mX0JVrE8kVXF_gKbQw3GOy8Prk3Bc6AtwPdOZHMYgTAY3t4aAgMyEALw_wcB:G:s&s_kwcid=AL!4422!3!536323500429!e!!g!!amazon%20lightsail!11199789546!116615087504) with 2 GB RAM, 1 vCPUs, 60 GB SSD.
 
 I configured a machine with OS-only and selected Ubuntu 22.04.
 
 Then, get a prompt in the container. You will need to install `supervisord` and `nginx`.
 
 ```
-sudo apt-get update && sudo apt-get install supervisor nginx-core
+sudo apt-get update && sudo apt-get install supervisor nginx-core jq
 ```
 
 You can use `wget` to fetch the pre-created package and install it with `tar`.
+(Below we have a one-liner using `jq` that finds and fetches the latest release.)
 
 ```
 sudo su
 cd /
-wget https://github.com/cbeck88/faucet-package/releases/download/v0.2/package.tar.gz
+curl -s https://api.github.com/repos/cbeck88/faucet-package/releases/latest | jq -r .assets[0].browser_download_url | wget -i -
 tar -xzvf package.tar.gz
 ```
 
 The package will include an example account key which holds the funds of the faucet.
-This key is installed as `/var/lib/faucet/account_key.json`.
-You should modify the mnemonic in this file, replacing it with a secret mnemonic that you control.
+This key is installed as `/var/lib/faucet/account_key_example.json`.
+You should copy this file to `account_key.json`, and modify the mnemonic, replacing it with a secret mnemonic that you control.
+
+**Please back up your mnemonic using a password manager.**
 
 Then, run `supervisorctl`. You can use `reload` to start the services.
 

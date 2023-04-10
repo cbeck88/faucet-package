@@ -61,6 +61,10 @@ chmod 755 usr/local/bin/mobilecoind
 cp -f "$ROOT/conf/mobilecoind.conf" etc/supervisor/conf.d/mobilecoind.conf
 chmod 644 etc/supervisor/conf.d/mobilecoind.conf
 
+# This is needed for mobilecoind to be able to send to fog
+cp -f "$ROOT/mobilecoin/ingest-enclave.css" var/lib/mobilecoind/
+chmod 644 var/lib/mobilecoind/ingest-enclave.css
+
 cp -f "$ROOT/mobilecoin/target/release/mobilecoind-dev-faucet" usr/local/bin/
 chmod 755 usr/local/bin/mobilecoind-dev-faucet
 cp -f "$ROOT/conf/faucet.conf" etc/supervisor/conf.d/faucet.conf

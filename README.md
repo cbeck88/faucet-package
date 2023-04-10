@@ -20,6 +20,8 @@ You will need to further fix-up the default nginx install.
 
 ```
 sudo systemctl stop nginx
+sudo systemctl disable nginx
+sudo update-rc.d -f nginx disable
 sudo rm /etc/nginx/sites-enabled/default
 ```
 

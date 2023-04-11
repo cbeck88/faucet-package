@@ -18,6 +18,8 @@ usage() {
     Produces package.tar.gz artifact in root of repository
     Unpack this in / to install a supervisord config that runs the services
     with autorestart=true.
+
+    Optional: set LEDGER_BASE to be the path to a ledger db
 EOF
 }
 
@@ -46,7 +48,14 @@ mkdir -p package
 cd package
 mkdir -p usr/local/bin/
 mkdir -p var/lib/mobilecoind
-# Note: Don't create mobilecoind/ledger-db, we want the process to do that
+# Note: If we don't put a ledger in the package, then don't create mobilecoind/ledger-db, the mobilecoind process wants to do that
+if [[ $LEDGER_BASE ]]; then
+    # If we have a ledger to put in the package, copy data.mdb to the ledger-db directory,
+    # failing if this file is not found.
+    mkdir -p var/lib/mobilecoind/ledger-db
+    cp $LEDGER_BASE/data.mdb var/lib/mobilecoind/ledger-db/
+fi
+
 mkdir -p var/lib/mobilecoind/watcher-db
 mkdir -p var/lib/mobilecoind/mobilecoind-db
 mkdir -p var/lib/faucet
